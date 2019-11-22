@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Body, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Put } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { Recipe } from '../entities/recipe.entity';
 
@@ -14,7 +14,7 @@ export class RecipeController {
     }
 
     @Get()
-    async findAll(@Query() query: {}) {
+    async findAll() {
         return this.recipeService.findAll()
     }
 

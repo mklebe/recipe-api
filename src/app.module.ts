@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RecipeController } from './recipe/recipe.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { RecipeModule } from './recipe/recipe.module';
+import { IngredientModule } from './ingredient/ingredient.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
-    RecipeModule
+    RecipeModule,
+    IngredientModule
   ],
   controllers: [
     AppController
