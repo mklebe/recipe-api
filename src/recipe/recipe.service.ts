@@ -17,4 +17,8 @@ export class RecipeService {
     async create( recipe: Recipe ) {
         this.recipeRepository.save(recipe)
     }
+
+    async delete( recipe: Recipe ) {
+        this.recipeRepository.remove( recipe )
+    }
 }
