@@ -1,20 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ingredient } from 'src/entities/ingredient.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
+import { IngredientQuery } from 'src/dtos';
 
 @Injectable()
 export class IngredientService {
     constructor(
         @InjectRepository(Ingredient)
-        private readonly ingredientService: Repository<Ingredient>
+        private readonly ingredientRepository: Repository<Ingredient>
     ){}
 
-    async findAll(): Promise<Ingredient[]> {
-        return await this.ingredientService.find()
+    async findAll( query: IngredientQuery ): Promise<Ingredient[]> {
+        return await this.ingredientRepository.find({
+            where: [{
+                name: Like(`%${query.matcher}%`)
+            }],
+            take: query.limit
+        })
     }
 
     async create( ingredient: Ingredient ) {
-        this.ingredientService.save( ingredient )
+        this.ingredientRepository.save( ingredient )
     }
 }
