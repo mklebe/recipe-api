@@ -20,6 +20,10 @@ export class IngredientService {
         })
     }
 
+    async findById(id: string) {
+        return await this.ingredientRepository.findOne(id)
+    }
+
     async create( ingredient: Ingredient ) {
         this.ingredientRepository.save( ingredient )
     }
