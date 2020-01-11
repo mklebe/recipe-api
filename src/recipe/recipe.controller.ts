@@ -19,8 +19,9 @@ export class RecipeController {
     }
 
     @Get(':id')
-    findOne(@Param() params): string {
-        return `This finds recipe with id ${params.id}`
+    async findOne(@Param() params) {
+        console.log( params )
+        return this.recipeService.findById( params.id )
     }
 
     @Put(':id')

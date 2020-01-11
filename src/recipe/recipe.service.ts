@@ -14,6 +14,10 @@ export class RecipeService {
         return await this.recipeRepository.find()
     }
 
+    async findById(id: string): Promise<Recipe> {
+        return await this.recipeRepository.findOne( id )
+    }
+
     async create( recipe: Recipe ) {
         this.recipeRepository.save(recipe)
     }
