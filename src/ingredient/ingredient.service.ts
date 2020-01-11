@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Ingredient } from 'src/entities/ingredient.entity';
+import { Ingredient } from '../entities/ingredient.entity';
 import { Repository, Like } from 'typeorm';
-import { IngredientQuery } from 'src/dtos';
+import { IngredientQuery } from '../dtos';
 
 @Injectable()
 export class IngredientService {
@@ -20,7 +20,7 @@ export class IngredientService {
         })
     }
 
-    async findById(id: string) {
+    async findById(id: string): Promise<Ingredient> {
         return await this.ingredientRepository.findOne(id)
     }
 
