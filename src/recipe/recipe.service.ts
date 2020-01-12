@@ -25,4 +25,9 @@ export class RecipeService {
     async delete( recipe: Recipe ) {
         this.recipeRepository.remove( recipe )
     }
+
+    incrementHit( recipe: Recipe ): void {
+        this.recipeRepository
+            .increment( {id: recipe.id}, 'hits', 1 )
+    }
 }

@@ -13,8 +13,12 @@ export class Ingredient {
     name: string
 
     @ApiProperty()
-    @Column({type: 'varchar', length: '4096'})
+    @Column({type: 'varchar', length: '4096', default: 'none'})
     description: string
+
+    @ApiProperty()
+    @Column({type: 'integer', default: 0})
+    hits: number
 
     @ApiProperty()
     @ManyToMany(type => Recipe, recipe => recipe.ingredients)

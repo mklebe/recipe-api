@@ -24,6 +24,10 @@ export class Recipe {
     @ApiProperty()
     ingredients: Ingredient[]
 
+    @ApiProperty()
+    @Column({type: 'integer', default: 0})
+    hits: number
+
     @Column({length: '1000'})
     @ApiProperty()
     worksteps: string

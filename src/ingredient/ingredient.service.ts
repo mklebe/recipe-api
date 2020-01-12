@@ -25,6 +25,11 @@ export class IngredientService {
     }
 
     async create( ingredient: Ingredient ) {
-        this.ingredientRepository.save( ingredient )
+        return await this.ingredientRepository.save( ingredient )
+    }
+
+    incrementHit( recipe: Ingredient ): void {
+        this.ingredientRepository
+            .increment( {id: recipe.id}, 'hits', 1 )
     }
 }

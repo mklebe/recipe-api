@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Get, Query, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Query, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { IngredientService } from './ingredient.service';
-import { Ingredient } from 'src/entities/ingredient.entity';
-import { IngredientQuery } from 'src/dtos'
+import { Ingredient } from '../entities/ingredient.entity';
+import { IngredientQuery } from '../dtos'
 
 @Controller('ingredient')
 export class IngredientController {
@@ -11,13 +11,23 @@ export class IngredientController {
 
     @Post()
     async create(@Body() ingredientDto: Ingredient ) {
-        this.ingredientService.create( ingredientDto )
+        return await this.ingredientService.create( ingredientDto )
+            .catch(e => {
+                throw new HttpException('Could not create ingredient', HttpStatus.BAD_REQUEST)
+            })
     }
 
     @Get(':id')
-    async getById( @Param() params ) {
-        console.log( params )
-        return this.ingredientService.findById( params.id )
+    async getById( @Param('id') id: string ) {
+        return await this.ingredientService.findById( id )
+            .catch(e => {
+                throw new HttpException('Ingredient not found', HttpStatus.NOT_FOUND)
+            })
+    }
+
+    @Patch()
+    async updateHits(@Body() updateIngredientDto: Ingredient ) {
+        this.ingredientService.incrementHit( updateIngredientDto )
     }
 
     @Get()
