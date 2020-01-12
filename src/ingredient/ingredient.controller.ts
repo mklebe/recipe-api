@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get, Patch, Query, Param, HttpException, HttpSt
 import { IngredientService } from './ingredient.service';
 import { Ingredient } from '../entities/ingredient.entity';
 import { IngredientQuery } from '../dtos'
-import { SearchService } from 'src/search/search.service';
+import { SearchService } from '../search/search.service';
 
 @Controller('ingredient')
 export class IngredientController {
@@ -33,6 +33,13 @@ export class IngredientController {
     @Patch()
     async updateHits(@Body() updateIngredientDto: Ingredient ) {
         this.ingredientService.incrementHit( updateIngredientDto )
+    }
+
+    @Get('search/:term')
+    async findByTerm( @Param('term') term: string ) {
+        this.searchService.findIngredients( term ).then(( ingredientUIDS ) => {
+            console.log( ingredientUIDS )
+        })
     }
 
     @Get()
