@@ -2,16 +2,21 @@ import { Controller, Post, Body, Get, Patch, Query, Param, HttpException, HttpSt
 import { IngredientService } from './ingredient.service';
 import { Ingredient } from '../entities/ingredient.entity';
 import { IngredientQuery } from '../dtos'
+import { SearchService } from 'src/search/search.service';
 
 @Controller('ingredient')
 export class IngredientController {
     constructor(
-        private readonly ingredientService: IngredientService
+        private readonly ingredientService: IngredientService,
+        private readonly searchService: SearchService,
     ) {}
 
     @Post()
     async create(@Body() ingredientDto: Ingredient ) {
         return await this.ingredientService.create( ingredientDto )
+            .then(( ingredient ) => {
+                this.searchService.indexIngredient( ingredient )
+            })
             .catch(e => {
                 throw new HttpException('Could not create ingredient', HttpStatus.BAD_REQUEST)
             })
