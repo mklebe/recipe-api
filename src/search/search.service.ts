@@ -20,6 +20,20 @@ export class SearchService {
 
     }
 
+    bulkIndex( ingredients: Ingredient[] ) {
+        console.log( ingredients )
+        this.elasticsearchService.bulk({
+            body: ingredients,
+            index: INGREDIENT_INDEX,
+            type: 'ingredient'
+        })
+    }
+
+    dropIndex() {
+        console.log( 'FOOO' )
+        this.elasticsearchService.indices.delete({index: '_all'})
+    }
+
     indexIngredient( ingredient: Ingredient ) {
         this.elasticsearchService.index({
             index: INGREDIENT_INDEX,
