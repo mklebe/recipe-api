@@ -37,14 +37,10 @@ export class IngredientController {
 
     @Get('search/:term')
     async findByTerm( @Param('term') term: string ) {
-
-        let ids: string[]
-        await this.searchService.findIngredients( term )
-        .then(( ingredientIds ) => {
-            ids = ingredientIds
-        })
-
-        return this.ingredientService.findByIds( ids )
+        return this.searchService.findIngredients( term )
+            .then(( ingredientIds ) => {
+                return this.ingredientService.findByIds( ingredientIds )
+            })
     }
 
     @Get()

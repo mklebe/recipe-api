@@ -25,8 +25,12 @@ const ELASTIC_SEARCH_HOST = 'http://localhost:9200'
 export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
   onModuleInit() {
     this.searchService.dropIndex()
+      .then( _ => console.log('Old Index is dropped'))
       .then(() => {
-        console.log('Old Index is dropped')
+        console.log('Setting up autocomplete')
+        return this.searchService.setUpAutocomplete()
+      })
+      .then(() => {
         this.ingredientService.findAll(
           new FindAllIngredientsQuery()
           ).then(( ingredients ) => {
@@ -34,7 +38,7 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
             ingredients.forEach(( ingredient ) => {
               bulk.push({
                 index: {
-                  _index: 'ingredient-index',
+                  _index: 'ingredient-search-index',
                   _type: 'ingredients'
                 }
               })
@@ -43,7 +47,6 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
     
             this.searchService.bulkIndex(bulk)
               .then(_ => console.log('### DB indexed ###'))
-              .then( _ => console.log('Ingredient initialized'))
         })
       })
       .catch( (error) => {
