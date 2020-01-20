@@ -24,23 +24,32 @@ const ELASTIC_SEARCH_HOST = 'http://localhost:9200'
 })
 export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
   onModuleInit() {
-    console.log('Ingredient initialized')
-    this.ingredientService.findAll(
-      new FindAllIngredientsQuery()
-      ).then(( ingredients ) => {
-        const bulk = []
-        ingredients.forEach(( ingredient ) => {
-          bulk.push({
-            index: {
-              _index: 'ingredient-index',
-              _type: 'ingredients'
-            }
-          })
-          bulk.push( ingredient )
+    this.searchService.dropIndex()
+      .then(() => {
+        console.log('Old Index is dropped')
+        this.ingredientService.findAll(
+          new FindAllIngredientsQuery()
+          ).then(( ingredients ) => {
+            const bulk = []
+            ingredients.forEach(( ingredient ) => {
+              bulk.push({
+                index: {
+                  _index: 'ingredient-index',
+                  _type: 'ingredients'
+                }
+              })
+              bulk.push( ingredient )
+            })
+    
+            this.searchService.bulkIndex(bulk)
+              .then(_ => console.log('### DB indexed ###'))
+              .then( _ => console.log('Ingredient initialized'))
         })
-
-        this.searchService.bulkIndex(bulk)
-    })
+      })
+      .catch( (error) => {
+        console.log('### Error while initializing searchengine ###')
+        console.log( error )
+      } )
   }
 
   onApplicationShutdown() {
