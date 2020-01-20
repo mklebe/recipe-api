@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
 import { Ingredient } from '../entities/ingredient.entity'
 
-import { RequestParams } from '@elastic/elasticsearch'
-
 const INGREDIENT_INDEX = 'ingredient-index'
 
 interface SearchBody {
@@ -29,7 +27,6 @@ export class SearchService {
     }
 
     dropIndex(): Promise<any> {
-        console.log( 'FOOO' )
         return this.elasticsearchService.indices.delete({index: '_all'})
     }
 
@@ -47,7 +44,7 @@ export class SearchService {
         })
         .then(( response ) => {
             return response.body.hits.hits.map(( item ) => {
-                return item._id
+                return item._source.id
             })            
         })
         .catch((error) => {

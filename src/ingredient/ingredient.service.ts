@@ -24,6 +24,10 @@ export class IngredientService {
         return await this.ingredientRepository.findOne(id)
     }
 
+    async findByIds(ids: string[]): Promise<Ingredient[]> {
+        return await this.ingredientRepository.findByIds(ids)
+    }
+
     async create( ingredient: Ingredient ) {
         return await this.ingredientRepository.save( ingredient )
     }
