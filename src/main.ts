@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 
 async function bootstrap() {
   dotenv.config()
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule)
   const ingredientOptions = new DocumentBuilder()
     .setTitle('Recipe Book API')
     .setDescription('Documentation of REST Endpoints')

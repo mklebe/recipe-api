@@ -27,10 +27,6 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
     this.searchService.dropIndex()
       .then( _ => console.log('Old Index is dropped'))
       .then(() => {
-        console.log('Setting up autocomplete')
-        return this.searchService.setUpAutocomplete()
-      })
-      .then(() => {
         this.ingredientService.findAll(
           new FindAllIngredientsQuery()
           ).then(( ingredients ) => {
@@ -39,7 +35,7 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
               bulk.push({
                 index: {
                   _index: 'ingredient-search-index',
-                  _type: 'ingredients'
+                  _type: '_doc'
                 }
               })
               bulk.push( ingredient )

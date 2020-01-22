@@ -22,14 +22,6 @@ export class IngredientController {
             })
     }
 
-    @Get(':id')
-    async getById( @Param('id') id: string ) {
-        return await this.ingredientService.findById( id )
-            .catch(e => {
-                throw new HttpException('Ingredient not found', HttpStatus.NOT_FOUND)
-            })
-    }
-
     @Patch()
     async updateHits(@Body() updateIngredientDto: Ingredient ) {
         this.ingredientService.incrementHit( updateIngredientDto )
@@ -37,7 +29,7 @@ export class IngredientController {
 
     @Get('search/:term')
     async findByTerm( @Param('term') term: string ) {
-        return this.searchService.findIngredients( term )
+        return await this.searchService.findIngredients( term )
             .then(( ingredientIds ) => {
                 return this.ingredientService.findByIds( ingredientIds )
             })
@@ -45,8 +37,26 @@ export class IngredientController {
 
     @Get()
     async findAll(@Query() query: IngredientQuery ) {
+        console.log('Find All')
         return this.ingredientService
             .findAll( new ValidatedIngredientQuery(query) )
+    }
+
+    @Get('searchsuggest/:term')
+    async getAllFromElasticsearch(@Param('term') term: string) {
+        return this.searchService
+            .searchSuggest( term )
+            .then( suggestions => {
+                return this.ingredientService.findByNames( suggestions )
+            })
+    }
+
+    @Get(':id')
+    async getById( @Param('id') id: string ) {
+        return await this.ingredientService.findById( id )
+            .catch(e => {
+                throw new HttpException('Ingredient not found', HttpStatus.NOT_FOUND)
+            })
     }
 }
 
