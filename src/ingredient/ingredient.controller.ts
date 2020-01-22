@@ -47,6 +47,10 @@ export class IngredientController {
         return this.searchService
             .searchSuggest( term )
             .then( suggestions => {
+                if( suggestions.length === 0 ) {
+                    return []
+                }
+
                 return this.ingredientService.findByNames( suggestions )
             })
     }

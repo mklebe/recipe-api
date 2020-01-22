@@ -15,7 +15,7 @@ export class SearchService {
   }
 
 
-  searchSuggest( searchTerm: string ): Promise<any> {
+  searchSuggest( searchTerm: string ): Promise<string[]> {
     return this.elasticsearchService.search({
       index: INGREDIENT_SEARCH_INDEX,
       body: {
