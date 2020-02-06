@@ -42,8 +42,11 @@ export class IngredientController {
             .findAll( new ValidatedIngredientQuery(query) )
     }
 
-    @Get('searchsuggest/:term')
-    async getAllFromElasticsearch(@Param('term') term: string) {
+    @Get('searchsuggest')
+    async getAllFromElasticsearch(@Query() term: string) {
+        console.log('Looking for term:')
+        console.log( term )
+
         return this.searchService
             .searchSuggest( term )
             .then( suggestions => {
