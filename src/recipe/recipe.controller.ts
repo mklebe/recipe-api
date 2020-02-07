@@ -1,7 +1,13 @@
 import { Controller, Get, Post, Delete, Param, Body, Put, Patch } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { Recipe } from '../entities/recipe.entity';
+import { ApiTags, ApiHeader, ApiResponseProperty, ApiOkResponse } from '@nestjs/swagger';
 
+@ApiTags('recipe')
+@ApiHeader({
+    name: 'Recipe',
+    description: 'The REST endpoint to add and recive recipes'
+})
 @Controller('recipe')
 export class RecipeController {
     constructor(
@@ -9,28 +15,33 @@ export class RecipeController {
     ){}
 
     @Post()
+    @ApiOkResponse({type: Recipe})
     async create(@Body() createRecipeDto: Recipe) {
         this.recipeService.create( createRecipeDto )
     }
 
     @Get()
-    async findAll() {
+    @ApiOkResponse({type: Recipe, isArray: true})
+    async findAll(): Promise<Recipe[]> {
         return this.recipeService.findAll()
     }
 
     @Patch()
+    @ApiOkResponse({type: Recipe})
     async updateHits(@Body() updateRecipeDto: Recipe ) {
         this.recipeService.incrementHit( updateRecipeDto )
     }
 
     @Get(':id')
+    @ApiOkResponse({type: Recipe})
     async findOne(@Param() params) {
         console.log( params )
         return this.recipeService.findById( params.id )
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateRecipeDto: {}) {
+    @ApiOkResponse({type: Recipe})
+    update(@Param('id') id: string, @Body() updateRecipeDto: Recipe) {
         return `This action updates a #${id} recipe`;
     }
 

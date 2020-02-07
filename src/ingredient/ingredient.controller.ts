@@ -3,7 +3,9 @@ import { IngredientService } from './ingredient.service';
 import { Ingredient } from '../entities/ingredient.entity';
 import { IngredientQuery } from '../dtos'
 import { SearchService } from '../search/search.service';
+import { ApiTags, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('ingredient')
 @Controller('ingredient')
 export class IngredientController {
     constructor(
@@ -12,6 +14,7 @@ export class IngredientController {
     ) {}
 
     @Post()
+    @ApiOkResponse({type: Ingredient})
     async create(@Body() ingredientDto: Ingredient ) {
         return await this.ingredientService.create( ingredientDto )
             .then(( ingredient ) => {
@@ -23,11 +26,13 @@ export class IngredientController {
     }
 
     @Patch()
+    @ApiOkResponse({type: Ingredient})
     async updateHits(@Body() updateIngredientDto: Ingredient ) {
         this.ingredientService.incrementHit( updateIngredientDto )
     }
 
     @Get('search/:term')
+    @ApiOkResponse({type: Ingredient, isArray: true})
     async findByTerm( @Param('term') term: string ) {
         return await this.searchService.findIngredients( term )
             .then(( ingredientIds ) => {
@@ -36,6 +41,7 @@ export class IngredientController {
     }
 
     @Get()
+    @ApiOkResponse({type: Ingredient, isArray: true})
     async findAll(@Query() query: IngredientQuery ) {
         console.log('Find All')
         return this.ingredientService
@@ -43,10 +49,15 @@ export class IngredientController {
     }
 
     @Get('searchsuggest')
+    @ApiOkResponse({type: Ingredient, isArray: true})
+    @ApiOperation({
+        operationId: 'searchSuggestion',
+        parameters: [{
+            in: 'query',
+            name: 'term',
+        }],
+    })
     async getAllFromElasticsearch(@Query() term: string) {
-        console.log('Looking for term:')
-        console.log( term )
-
         return this.searchService
             .searchSuggest( term )
             .then( suggestions => {
@@ -59,6 +70,7 @@ export class IngredientController {
     }
 
     @Get(':id')
+    @ApiOkResponse({type: Ingredient})
     async getById( @Param('id') id: string ) {
         return await this.ingredientService.findById( id )
             .catch(e => {

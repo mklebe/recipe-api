@@ -1,6 +1,6 @@
 import {Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
 import { Recipe } from "./recipe.entity";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiHideProperty } from "@nestjs/swagger";
 import { Diet } from "./diet.entity";
 import { Season } from "./season.entity";
 
@@ -18,7 +18,7 @@ export class Ingredient {
     @Column({type: 'varchar', length: '4096', default: 'none'})
     description: string
 
-    @ApiProperty()
+    @ApiProperty({isArray: true, type: Diet})
     @ManyToMany(type => Diet, diet => diet.foods, {
         cascade: true,
         eager: true
@@ -26,7 +26,7 @@ export class Ingredient {
     @JoinTable()
     diets: Diet[]
 
-    @ApiProperty()
+    @ApiProperty({isArray: true, type: Season, })
     @ManyToMany( type => Season, season => season.foods, {
         cascade: true,
         eager: true
@@ -38,7 +38,7 @@ export class Ingredient {
     @Column({type: 'integer', default: 0})
     hits: number
 
-    @ApiProperty()
+    @ApiHideProperty()
     @ManyToMany(type => Recipe, recipe => recipe.ingredients)
     usedIn: Recipe[]
 }
