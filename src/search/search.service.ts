@@ -10,12 +10,11 @@ const INGREDIENT_AUTOCOMPLETE_INDEX = 'ingredient-autocomplete-index'
 export class SearchService {
   constructor(
     private readonly elasticsearchService: ElasticsearchService
-  ) {
-
-  }
+  ) {}
 
 
   searchSuggest( searchTerm: string ): Promise<string[]> {
+    console.log( searchTerm, 'service' )
     return this.elasticsearchService.search({
       index: INGREDIENT_SEARCH_INDEX,
       body: {
@@ -30,6 +29,7 @@ export class SearchService {
       }
     })
     .then( response => {
+      console.log( response.body.suggest['my_suggestion_1'][0] )
       return response.body.suggest['my_suggestion_1'][0].options.map((option) => {
         return option.text
       })

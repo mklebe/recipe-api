@@ -3,7 +3,7 @@ import { IngredientService } from './ingredient.service';
 import { Ingredient } from '../entities/ingredient.entity';
 import { IngredientQuery } from '../dtos'
 import { SearchService } from '../search/search.service';
-import { ApiTags, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('ingredient')
 @Controller('ingredient')
@@ -31,9 +31,10 @@ export class IngredientController {
         this.ingredientService.incrementHit( updateIngredientDto )
     }
 
-    @Get('search/:term')
+    @Get('search')
     @ApiOkResponse({type: Ingredient, isArray: true})
-    async findByTerm( @Param('term') term: string ) {
+    @ApiOperation({operationId: 'findIngredient'})
+    async findByTerm( @Query('term') term: string ) {
         return await this.searchService.findIngredients( term )
             .then(( ingredientIds ) => {
                 return this.ingredientService.findByIds( ingredientIds )
@@ -42,32 +43,33 @@ export class IngredientController {
 
     @Get()
     @ApiOkResponse({type: Ingredient, isArray: true})
-    async findAll(@Query() query: IngredientQuery ) {
-        console.log('Find All')
+    @ApiOperation({operationId: 'findAll'})
+    async findAll(@Query('query') limit: number ) {
         return this.ingredientService
-            .findAll( new ValidatedIngredientQuery(query) )
+            .findAll( limit )
     }
 
-    @Get('searchsuggest')
-    @ApiOkResponse({type: Ingredient, isArray: true})
-    @ApiOperation({
-        operationId: 'searchSuggestion',
-        parameters: [{
-            in: 'query',
-            name: 'term',
-        }],
-    })
-    async getAllFromElasticsearch(@Query() term: string) {
-        return this.searchService
-            .searchSuggest( term )
-            .then( suggestions => {
-                if( suggestions.length === 0 ) {
-                    return []
-                }
+    // @Get('searchsuggest')
+    // @ApiOkResponse({type: Ingredient, isArray: true})
+    // @ApiOperation({
+    //     operationId: 'searchSuggestion',
+    // })
+    // @ApiQuery({
+    //     name: 'term',
+    //     required: true,
+    //     type: 'string'
+    // })
+    // async getAllFromElasticsearch(@Query('term') term: string) {
+    //     return await this.searchService
+    //         .findIngredients( term )
+    //         .then( suggestions => {
+    //             if( suggestions.length === 0 ) {
+    //                 return []
+    //             }
 
-                return this.ingredientService.findByNames( suggestions )
-            })
-    }
+    //             return this.ingredientService.findByNames( suggestions )
+    //         })
+    // }
 
     @Get(':id')
     @ApiOkResponse({type: Ingredient})

@@ -7,6 +7,7 @@ import {ElasticsearchModule} from '@nestjs/elasticsearch'
 import { SearchService } from '../search/search.service';
 import { IngredientQuery } from '../dtos'
 
+const MAXIMUM_INGREDIENTS = 100
 const ELASTIC_SEARCH_HOST = 'http://localhost:9200'
 
 @Module({
@@ -27,9 +28,8 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
     this.searchService.dropIndex()
       .then( _ => console.log('Old Index is dropped'))
       .then(() => {
-        this.ingredientService.findAll(
-          new FindAllIngredientsQuery()
-          ).then(( ingredients ) => {
+        this.ingredientService.findAll(MAXIMUM_INGREDIENTS)
+          .then(( ingredients ) => {
             const bulk = []
             ingredients.forEach(( ingredient ) => {
               bulk.push({

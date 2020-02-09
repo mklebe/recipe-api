@@ -11,12 +11,9 @@ export class IngredientService {
         private readonly ingredientRepository: Repository<Ingredient>
     ){}
 
-    async findAll( query: IngredientQuery ): Promise<Ingredient[]> {
+    async findAll( limit: number ): Promise<Ingredient[]> {
         return await this.ingredientRepository.find({
-            where: [{
-                name: Like(`%${query.matcher}%`)
-            }],
-            take: query.limit
+            take: limit
         })
     }
 
