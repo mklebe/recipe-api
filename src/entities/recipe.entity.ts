@@ -6,11 +6,16 @@ import { ApiProperty } from "@nestjs/swagger";
 export class Recipe {
     @PrimaryColumn()
     @PrimaryGeneratedColumn('increment')
+    @ApiProperty()
     id: number
 
     @Column({length: '100'})
     @ApiProperty()
     name: string
+
+    @Column({length: '100'})
+    @ApiProperty()
+    slug: string
 
     @Column({length: '512'})
     @ApiProperty()
@@ -21,14 +26,13 @@ export class Recipe {
         eager: true
     } )
     @JoinTable()
-    @ApiProperty()
+    @ApiProperty({
+        type: Ingredient,
+        isArray: true
+    })
     ingredients: Ingredient[]
 
     @ApiProperty()
     @Column({type: 'integer', default: 0})
     hits: number
-
-    @Column({length: '1000'})
-    @ApiProperty()
-    worksteps: string
 }

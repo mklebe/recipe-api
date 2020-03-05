@@ -14,7 +14,9 @@ export class Diet {
     id: number
 
     @Column({length: '100'})
-    @ApiProperty()
+    @ApiProperty({
+        enum: VegetarianDiets
+    })
     name: VegetarianDiets
 
     @ManyToMany( type => Ingredient, ingredient => ingredient.diets )

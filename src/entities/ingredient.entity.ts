@@ -8,11 +8,16 @@ import { Season } from "./season.entity";
 export class Ingredient {
     @PrimaryColumn()
     @PrimaryGeneratedColumn('increment')
+    @ApiProperty()
     id: number
 
     @ApiProperty()
     @Column({type: 'varchar', length: '256'})
     name: string
+
+    @ApiProperty()
+    @Column({type: 'varchar', length: '256'})
+    slug: string
 
     @ApiProperty()
     @Column({type: 'varchar', length: '4096', default: 'none'})

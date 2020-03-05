@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Connection } from 'typeorm'
 import { RecipeModule } from './recipe/recipe.module'
 import { IngredientModule } from './ingredient/ingredient.module'
+import { ImageController } from './image/image.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { IngredientModule } from './ingredient/ingredient.module'
     IngredientModule,
   ],
   controllers: [
-    AppController
+    AppController,
+    ImageController
   ],
   providers: [
     AppService,

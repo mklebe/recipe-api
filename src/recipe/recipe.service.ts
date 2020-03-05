@@ -19,7 +19,7 @@ export class RecipeService {
     }
 
     async create( recipe: Recipe ) {
-        this.recipeRepository.save(recipe)
+        return await this.recipeRepository.save(recipe)
     }
 
     async delete( recipe: Recipe ) {

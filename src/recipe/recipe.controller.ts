@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Delete, Param, Body, Put, Patch } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { Recipe } from '../entities/recipe.entity';
-import { ApiTags, ApiHeader, ApiResponseProperty, ApiOkResponse, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiHeader, ApiResponseProperty, ApiOkResponse, ApiOperation, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
+
+const slugify = require('slugify')
 
 @ApiTags('recipe')
 @Controller('recipe')
@@ -12,7 +14,13 @@ export class RecipeController {
 
     @Post()
     @ApiOkResponse({type: Recipe})
+    @ApiOperation({operationId: 'addRecipe'})
+    @ApiBody({
+        type: Recipe,
+        required: true,
+    })
     async create(@Body() createRecipeDto: Recipe) {
+        createRecipeDto.slug = slugify(createRecipeDto.name)
         this.recipeService.create( createRecipeDto )
     }
 
@@ -24,7 +32,7 @@ export class RecipeController {
 
     @Patch()
     @ApiOkResponse({type: Recipe})
-    @ApiOperation({operationId: 'incrementHits'})
+    @ApiOperation({operationId: 'incrementRecipeHits'})
     async updateHits(@Body() updateRecipeDto: Recipe ) {
         await this.recipeService.incrementHit( updateRecipeDto )
         return updateRecipeDto

@@ -24,7 +24,9 @@ export class Season {
     id: number
 
     @Column({length: '100'})
-    @ApiProperty()
+    @ApiProperty({
+        enum: Month
+    })
     name: Month
 
     @ManyToMany( type => Ingredient, ingredient => ingredient.seasons )
