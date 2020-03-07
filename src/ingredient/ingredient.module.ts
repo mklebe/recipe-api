@@ -46,6 +46,10 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
     
             this.searchService.bulkIndex(bulk)
               .then(_ => console.log('### DB indexed ###'))
+              .catch((e) => {
+                console.log('### Error in Bulkindexing ###')
+                console.log( e )
+              })
         })
       })
       .catch( (error) => {
