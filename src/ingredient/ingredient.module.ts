@@ -7,8 +7,10 @@ import {ElasticsearchModule} from '@nestjs/elasticsearch'
 import { SearchService } from '../search/search.service';
 import { IngredientQuery } from '../dtos'
 
+require('dotenv').config()
+
 const MAXIMUM_INGREDIENTS = 100
-const ELASTIC_SEARCH_HOST = 'http://localhost:9200'
+const ELASTIC_SEARCH_HOST = process.env.SEARCHBOX_URL
 
 @Module({
   imports: [

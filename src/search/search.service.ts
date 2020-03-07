@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
 import { Ingredient } from '../entities/ingredient.entity'
-import { from } from 'rxjs'
 
 const INGREDIENT_SEARCH_INDEX = 'ingredient-search-index'
 const INGREDIENT_AUTOCOMPLETE_INDEX = 'ingredient-autocomplete-index'
