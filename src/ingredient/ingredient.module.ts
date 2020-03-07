@@ -26,7 +26,9 @@ const ELASTIC_SEARCH_HOST = process.env.SEARCHBOX_URL
   ]
 })
 export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
-  onModuleInit() {
+  async onModuleInit() {
+    console.log('### Initialize elasticsearch ###')
+    await this.searchService.initialize()
     console.log('### Drop Old index ###')
     this.searchService.dropIndex()
       .then( _ => console.log('Old Index is dropped'))

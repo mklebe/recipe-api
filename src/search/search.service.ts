@@ -11,6 +11,16 @@ export class SearchService {
     private readonly elasticsearchService: ElasticsearchService
   ) {}
 
+  initialize(): Promise<boolean> {
+    return this.elasticsearchService.index({
+      index: INGREDIENT_SEARCH_INDEX,
+      body: {}
+    })
+    .then(() => {
+      return true
+    })
+  }
+
 
   searchSuggest( searchTerm: string ): Promise<string[]> {
     console.log( searchTerm, 'service' )
