@@ -27,6 +27,7 @@ const ELASTIC_SEARCH_HOST = process.env.SEARCHBOX_URL
 })
 export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
   onModuleInit() {
+    console.log('### Drop Old index ###')
     this.searchService.dropIndex()
       .then( _ => console.log('Old Index is dropped'))
       .then(() => {
