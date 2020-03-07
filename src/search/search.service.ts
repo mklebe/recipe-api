@@ -48,6 +48,9 @@ export class SearchService {
 
   dropIndex(): Promise<any> {
     return this.elasticsearchService.indices.delete({ index: '_all' })
+      .catch(() => {
+        console.log('### Could not drop indicies... continue... ###')
+      })
   }
 
   indexIngredient(ingredient: Ingredient) {
