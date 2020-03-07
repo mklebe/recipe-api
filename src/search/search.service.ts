@@ -12,9 +12,10 @@ export class SearchService {
   ) {}
 
   initialize(): Promise<boolean> {
+    const ingredient = new Ingredient()
     return this.elasticsearchService.index({
       index: INGREDIENT_SEARCH_INDEX,
-      body: {}
+      body: ingredient
     })
     .then(() => {
       return true
