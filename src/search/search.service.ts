@@ -16,7 +16,10 @@ export class SearchService {
     return this.elasticsearchService.indices.exists({
       index: INGREDIENT_SEARCH_INDEX
     })
-    .then(_ => console.log( `Index ${INGREDIENT_SEARCH_INDEX} is up and running` ))
+    .then( (result) => {
+      console.log( `Index ${INGREDIENT_SEARCH_INDEX} is up and running`)
+      console.log( result )
+    })
     .catch( async () => {
       console.log(`Index ${INGREDIENT_SEARCH_INDEX} does not exist, initialize it now ...`)
       await this.elasticsearchService.create({
