@@ -11,29 +11,6 @@ export class SearchService {
     private readonly elasticsearchService: ElasticsearchService
   ) {}
 
-  async initialize() {
-    const ingredient = new Ingredient()
-    // return this.elasticsearchService.indices.exists({
-    //   index: INGREDIENT_SEARCH_INDEX
-    // })
-    // .then( (result) => {
-    //   console.log( `Index ${INGREDIENT_SEARCH_INDEX} is up and running`)
-    //   console.log( result )
-    // })
-    // .catch( async () => {
-      console.log(`Index ${INGREDIENT_SEARCH_INDEX} does not exist, initialize it now ...`)
-      await this.elasticsearchService.create({
-        id: '0',
-        index: INGREDIENT_SEARCH_INDEX,
-        body: {},
-      })
-      .catch( _ => console.log('### FATAL: Could not create index. Abort! ###') )
-
-      console.log(`Index ${INGREDIENT_SEARCH_INDEX} is created. Happy Search!`)
-    // })
-  }
-
-
   searchSuggest( searchTerm: string ): Promise<string[]> {
     console.log( searchTerm, 'service' )
     return this.elasticsearchService.search({
@@ -62,6 +39,10 @@ export class SearchService {
 
   bulkIndex(ingredients: Ingredient[]): Promise<any> {
     console.log(`Bulk indexing of ${ingredients.length / 2} ingredients`)
+    if( ingredients.length === 0 ) {
+      console.log( '### Nothing to index here, continue! ###' )
+      return Promise.resolve()
+    }
     return this.elasticsearchService.bulk({
       body: ingredients,
       index: INGREDIENT_SEARCH_INDEX,
