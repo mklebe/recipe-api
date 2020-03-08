@@ -11,14 +11,22 @@ export class SearchService {
     private readonly elasticsearchService: ElasticsearchService
   ) {}
 
-  initialize(): Promise<boolean> {
+  initialize() {
     const ingredient = new Ingredient()
-    return this.elasticsearchService.index({
-      index: INGREDIENT_SEARCH_INDEX,
-      body: ingredient
+    return this.elasticsearchService.indices.exists({
+      index: INGREDIENT_SEARCH_INDEX
     })
-    .then(() => {
-      return true
+    .then(_ => console.log( `Index ${INGREDIENT_SEARCH_INDEX} is up and running` ))
+    .catch( async () => {
+      console.log(`Index ${INGREDIENT_SEARCH_INDEX} does not exist, initialize it now ...`)
+      await this.elasticsearchService.create({
+        id: '0',
+        index: INGREDIENT_SEARCH_INDEX,
+        body: {},
+      })
+      .catch( _ => console.log('### FATAL: Could not create index. Abort! ###') )
+
+      console.log(`Index ${INGREDIENT_SEARCH_INDEX} is created. Happy Search!`)
     })
   }
 
