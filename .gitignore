@@ -36,3 +36,7 @@ ormconfig.yml
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+# project specific
+/images
