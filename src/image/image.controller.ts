@@ -30,6 +30,12 @@ export class ImageController {
         description: 'Recipe image',
         type: FileUploadDto
     })
+    @ApiResponse({
+        status: 200,
+        schema: {
+            type: 'string'
+        }
+    })
     @ApiConsumes('multipart/form-data')
     async uploadFile( @UploadedFile() file ) {
         return file.path
