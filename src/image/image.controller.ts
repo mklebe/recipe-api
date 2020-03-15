@@ -1,8 +1,13 @@
-import { Controller, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiOperation, ApiTags, ApiConsumes, ApiProperty, ApiBody, ApiResponse } from '@nestjs/swagger'
 import { diskStorage } from  'multer'
 import { extname } from  'path'
+
+class NestImage {
+    @ApiProperty()
+    src: string
+}
 
 class FileUploadDto {
     @ApiProperty({ type: 'string', format: 'binary' })
@@ -16,7 +21,7 @@ export class ImageController {
     @UseInterceptors(
         FileInterceptor('file', {
             storage: diskStorage({
-                destination: './images/recipe',
+                destination: './static/images/recipe',
                 filename: (req, file, cb) => {
                     console.log( req )
                     const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
@@ -31,13 +36,11 @@ export class ImageController {
         type: FileUploadDto
     })
     @ApiResponse({
-        status: 200,
-        schema: {
-            type: 'string'
-        }
+        status: 201,
+        type: NestImage
     })
     @ApiConsumes('multipart/form-data')
     async uploadFile( @UploadedFile() file ) {
-        return file.path
+        return {src: file.path}
     }
 }
