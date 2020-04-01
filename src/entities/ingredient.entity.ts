@@ -25,7 +25,7 @@ export class Ingredient {
 
     @ApiProperty({isArray: true, type: Diet})
     @ManyToMany(type => Diet, diet => diet.foods, {
-        cascade: true,
+        cascade: ['insert', 'update'],
         eager: true
     })
     @JoinTable()
@@ -33,7 +33,7 @@ export class Ingredient {
 
     @ApiProperty({isArray: true, type: Season, })
     @ManyToMany( type => Season, season => season.foods, {
-        cascade: true,
+        cascade: ['insert', 'update'],
         eager: true
     })
     @JoinTable()

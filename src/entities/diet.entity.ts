@@ -2,11 +2,6 @@ import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, ManyToMany } fro
 import { ApiProperty } from "@nestjs/swagger";
 import { Ingredient } from "./ingredient.entity";
 
-export enum VegetarianDiets {
-    VEGAN = 'Vegan',
-    VEGETARIAN = 'Vegetarian',
-}
-
 @Entity()
 export class Diet {
     @PrimaryColumn()
@@ -14,10 +9,8 @@ export class Diet {
     id: number
 
     @Column({length: '100'})
-    @ApiProperty({
-        enum: VegetarianDiets
-    })
-    name: VegetarianDiets
+    @ApiProperty()
+    name: string
 
     @ManyToMany( type => Ingredient, ingredient => ingredient.diets )
     foods: Ingredient[]

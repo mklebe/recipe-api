@@ -24,6 +24,7 @@ export class IngredientController {
     })
     async create(@Body() ingredientDto: Ingredient ) {
         ingredientDto.slug = slugify(ingredientDto.name)
+        console.log( ingredientDto )
         return await this.ingredientService.create( ingredientDto )
             .then(( ingredient ) => {
                 this.searchService.indexIngredient( ingredient )

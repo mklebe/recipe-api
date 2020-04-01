@@ -2,21 +2,6 @@ import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, ManyToMany } fro
 import { ApiProperty } from "@nestjs/swagger";
 import { Ingredient } from "./ingredient.entity";
 
-export enum Month {
-    JANUARY = 'January',
-    FEBRUARY = 'February',
-    MARCH = 'March',
-    APRIL = 'April',
-    MAY = 'May',
-    JUNE = 'June',
-    JULY = 'July',
-    AUGUST = 'August',
-    SEPTEMBER = 'September',
-    OCTOBER = 'October',
-    NOVEMBER = 'November',
-    DECEMBER = 'December'
-}
-
 @Entity()
 export class Season {
     @PrimaryColumn()
@@ -24,10 +9,8 @@ export class Season {
     id: number
 
     @Column({length: '100'})
-    @ApiProperty({
-        enum: Month
-    })
-    name: Month
+    @ApiProperty()
+    name: string
 
     @ManyToMany( type => Ingredient, ingredient => ingredient.seasons )
     foods: Ingredient[]
