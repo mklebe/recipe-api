@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ingredient } from '../entities/ingredient.entity';
 import {ElasticsearchModule} from '@nestjs/elasticsearch'
 import { SearchService } from '../search/search.service';
-import { IngredientQuery } from '../dtos'
 
 require('dotenv').config()
 
@@ -70,9 +69,4 @@ export class IngredientModule implements OnModuleInit, OnApplicationShutdown {
   ) {
 
   }
-}
-
-class FindAllIngredientsQuery implements IngredientQuery {
-  public matcher = ''
-  public limit = 100
 }
