@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiOperation, ApiTags, ApiConsumes, ApiProperty, ApiBody, ApiResponse } from '@nestjs/swagger'
 import { diskStorage } from  'multer'
 import { extname } from  'path'
+const cloudinary = require('cloudinary')
 
 class NestImage {
     @ApiProperty()
@@ -41,6 +42,10 @@ export class ImageController {
     })
     @ApiConsumes('multipart/form-data')
     async uploadFile( @UploadedFile() file ) {
+        console.log(`### Upload ${file.path} ###`)
+        cloudinary.uploader.upload( file.path, (result) => {
+            console.log( result )
+        })
         return {src: file.path}
     }
 }
