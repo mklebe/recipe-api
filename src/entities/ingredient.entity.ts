@@ -23,6 +23,10 @@ export class Ingredient {
     @Column({type: 'varchar', length: '4096', default: 'none'})
     description: string
 
+    @ApiProperty()
+    @Column({type: "varchar", length: 256, default: ''})
+    image: string
+
     @ApiProperty({isArray: true, type: Diet})
     @ManyToMany(type => Diet, diet => diet.foods, {
         cascade: ['insert', 'update'],

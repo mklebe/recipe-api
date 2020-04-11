@@ -6,9 +6,15 @@ import { extname } from  'path'
 const fs = require('fs')
 const cloudinary = require('cloudinary')
 
-class NestImage {
+class CloudinaryImage {
     @ApiProperty()
-    src: string
+    url: string
+
+    @ApiProperty()
+    height: number
+
+    @ApiProperty()
+    width: number
 }
 
 class FileUploadDto {
@@ -38,7 +44,7 @@ export class ImageController {
     })
     @ApiResponse({
         status: 201,
-        type: NestImage
+        type: CloudinaryImage
     })
     @ApiConsumes('multipart/form-data')
     async uploadFile( @UploadedFile() file ) {

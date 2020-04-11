@@ -17,8 +17,8 @@ export class Recipe {
     @ApiProperty()
     slug: string
 
-    @Column({length: '512'})
     @ApiProperty()
+    @Column({type: "varchar", length: 256, default: ''})
     image: string
 
     @ManyToMany( type => Ingredient, ingredient => ingredient.usedIn, {
