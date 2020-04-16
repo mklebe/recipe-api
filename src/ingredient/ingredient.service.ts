@@ -21,6 +21,10 @@ export class IngredientService {
         return await this.ingredientRepository.findOne(id)
     }
 
+    async update(ingredient: Ingredient): Promise<Ingredient> {
+        return await this.ingredientRepository.save(ingredient)
+    }
+
     async findByNames(names :string[]):Promise<Ingredient[]> {
         const whereClause = names.map( name => {
             return {name: Like(`%${name}%`)}

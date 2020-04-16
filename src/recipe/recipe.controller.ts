@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Body, Put, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Put, Patch, HttpException, HttpStatus } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { Recipe } from '../entities/recipe.entity';
 import { ApiTags, ApiHeader, ApiResponseProperty, ApiOkResponse, ApiOperation, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
@@ -54,11 +54,11 @@ export class RecipeController {
     @Put(':id')
     @ApiOkResponse({type: Recipe})
     update(@Param('id') id: string, @Body() updateRecipeDto: Recipe) {
-        return `This action updates a #${id} recipe`;
+        return this.recipeService.update( id, updateRecipeDto )
     }
 
     @Delete(':id')
     remove(@Param() params): string {
-        return `This deletes recipe with id ${params.id}`
+        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
     }
 }

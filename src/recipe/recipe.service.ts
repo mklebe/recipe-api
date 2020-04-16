@@ -22,6 +22,10 @@ export class RecipeService {
         return await this.recipeRepository.save(recipe)
     }
 
+    async update( id: string, recipe: Recipe ) {
+        return await this.recipeRepository.update( id, recipe)
+    }
+
     async delete( recipe: Recipe ) {
         this.recipeRepository.remove( recipe )
     }
