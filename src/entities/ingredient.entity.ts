@@ -27,6 +27,50 @@ export class Ingredient {
     @Column({type: "varchar", length: 256, default: ''})
     image: string
 
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // energy: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // fat: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // saturates: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // monounsturates: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // polyunstaurates: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // carbohydrates: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // starch: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // fibre: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // protein: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // salt: number
+
+    // @ApiProperty()
+    // @Column({type: 'number', default: ''})
+    // vitaminC: number
+
     @ApiProperty({isArray: true, type: Diet})
     @ManyToMany(type => Diet, diet => diet.foods, {
         cascade: ['insert', 'update'],
